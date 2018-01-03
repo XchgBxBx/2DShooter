@@ -80,10 +80,12 @@ namespace _2DShooter
                 players[i].Power = 100;
             }
 
-            players[0].Position = new Vector2(150, 192);
-            players[1].Position = new Vector2(319, 216);
-            players[2].Position = new Vector2(472, 393);
-            players[3].Position = new Vector2(630, 158);
+            players[0].Position = new Vector2(172, 233);
+            players[1].Position = new Vector2(325, 255);
+            players[2].Position = new Vector2(486, 433);
+            players[3].Position = new Vector2(642, 197);
+
+            playersScale = 70.0f / carriageTexture.Width;
         }
 
         /// <summary>
@@ -138,25 +140,6 @@ namespace _2DShooter
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            //if (Keyboard.GetState().IsKeyDown(Keys.NumPad0))
-            //    activeDebuggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg = 0;
-            //if (Keyboard.GetState().IsKeyDown(Keys.NumPad1))
-            //    activeDebuggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg = 1;
-            //if (Keyboard.GetState().IsKeyDown(Keys.NumPad2))
-            //    activeDebuggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg = 2;
-            //if (Keyboard.GetState().IsKeyDown(Keys.NumPad3))
-            //    activeDebuggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg = 3;
-
-            //if (Keyboard.GetState().IsKeyDown(Keys.Up))
-            //    players[activeDebuggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg].Position.Y -= step;
-            //if (Keyboard.GetState().IsKeyDown(Keys.Down))
-            //    players[activeDebuggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg].Position.Y += step;
-
-            //if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            //    players[activeDebuggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg].Position.X -= step;
-            //if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            //    players[activeDebuggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg].Position.X += step;
-
 
             base.Update(gameTime);
         }
@@ -174,7 +157,7 @@ namespace _2DShooter
             {
                 if(player.IsAlive)
                 {
-                    spriteBatch.Draw(carriageTexture, player.Position, player.Color);
+                    spriteBatch.Draw(carriageTexture, player.Position, null, player.Color, 0, new Vector2(0, carriageTexture.Height), playersScale, SpriteEffects.None, 0);
                 }
             }
         }
@@ -191,17 +174,6 @@ namespace _2DShooter
 
             DrawScene();
             DrawPlayers();
-
-            ////
-            //// DEBUG POSITIONS = DELETE mE
-
-            //    spriteBatch.DrawString(font,
-            //        "[0] = " + players[0].Position +
-            //        "\n[1] = " + players[1].Position +
-            //        "\n[2] = " + players[2].Position +
-            //        "\n[3] = " + players[3].Position, new Vector2(0, 0), Color.White);
-
-            ////
 
             spriteBatch.End();
 
