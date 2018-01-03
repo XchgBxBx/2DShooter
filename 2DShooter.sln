@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2DShooter", "2DShooter\2DShooter.csproj", "{9C66FFB4-E1AE-45F8-B590-A921EFCAEB7C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9C66FFB4-E1AE-45F8-B590-A921EFCAEB7C}.Debug|x86.ActiveCfg = Debug|x86
+		{9C66FFB4-E1AE-45F8-B590-A921EFCAEB7C}.Debug|x86.Build.0 = Debug|x86
+		{9C66FFB4-E1AE-45F8-B590-A921EFCAEB7C}.Release|x86.ActiveCfg = Release|x86
+		{9C66FFB4-E1AE-45F8-B590-A921EFCAEB7C}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9112DFEA-4FA1-4A77-AE36-E85785C29AB3}
+	EndGlobalSection
+EndGlobal
