@@ -53,12 +53,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\background.jpg" />
+    <Content Include="Content\cannon.png" />
+    <Content Include="Content\carriage.png" />
+    <Content Include="Content\foreground.png" />
+    <Content Include="Content\rocket.png" />
+    <Content Include="Content\smoke.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
-    <None Include="README.md" />
+    <None Include="Content\Font.spritefont" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
