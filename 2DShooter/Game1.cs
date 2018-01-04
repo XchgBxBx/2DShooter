@@ -41,6 +41,8 @@ namespace _2DShooter
 
         float playersScale;
 
+        int currentPlayer = 0;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -130,6 +132,38 @@ namespace _2DShooter
             // TODO: Unload any non ContentManager content here
         }
 
+
+        private void ProcessKeyboard()
+        {
+            KeyboardState kbdState = Keyboard.GetState();
+
+            if (kbdState.IsKeyDown(Keys.Left))
+                players[currentPlayer].Angle -= 0.01f;
+            if (kbdState.IsKeyDown(Keys.Right))
+                players[currentPlayer].Angle += 0.01f;
+
+
+            if (players[currentPlayer].Angle > MathHelper.PiOver2)
+                players[currentPlayer].Angle = -MathHelper.PiOver2;
+            if (players[currentPlayer].Angle < -MathHelper.PiOver2)
+                players[currentPlayer].Angle = MathHelper.PiOver2;
+
+
+            if (kbdState.IsKeyDown(Keys.Down))
+                players[currentPlayer].Power -= 1;
+            if (kbdState.IsKeyDown(Keys.Up))
+                players[currentPlayer].Power += 1;
+            if (kbdState.IsKeyDown(Keys.PageDown))
+                players[currentPlayer].Power -= 20;
+            if (kbdState.IsKeyDown(Keys.PageUp))
+                players[currentPlayer].Power += 20;
+
+            if (players[currentPlayer].Power > 1000)
+                players[currentPlayer].Power = 1000;
+            if (players[currentPlayer].Power < 0)
+                players[currentPlayer].Power = 0;
+        }
+
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -140,6 +174,7 @@ namespace _2DShooter
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            ProcessKeyboard();
 
             base.Update(gameTime);
         }
@@ -157,6 +192,12 @@ namespace _2DShooter
             {
                 if(player.IsAlive)
                 {
+                    int xPos = (int)player.Position.X + 35;
+                    int yPos = (int)player.Position.Y - 15;
+                    Vector2 cannonOrigin = new Vector2(11, 50);
+
+                    spriteBatch.Draw(cannonTexture, new Vector2(xPos, yPos), null, player.Color, player.Angle, cannonOrigin, playersScale, SpriteEffects.None, 1);
+
                     spriteBatch.Draw(carriageTexture, player.Position, null, player.Color, 0, new Vector2(0, carriageTexture.Height), playersScale, SpriteEffects.None, 0);
                 }
             }
