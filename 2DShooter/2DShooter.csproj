@@ -56,7 +56,7 @@
     <Content Include="Content\background.jpg" />
     <Content Include="Content\cannon.png" />
     <Content Include="Content\carriage.png" />
-    <Content Include="Content\foreground.png" />
+    <Content Include="Content\ground.jpg" />
     <Content Include="Content\rocket.png" />
     <Content Include="Content\smoke.png" />
     <Content Include="Icon.ico" />

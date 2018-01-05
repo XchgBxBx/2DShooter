@@ -34,6 +34,7 @@ namespace _2DShooter
 
         Texture2D backgroundTexture;
         Texture2D foregroundTexture;
+        Texture2D groundTexture;
 
         Texture2D carriageTexture;
         Texture2D cannonTexture;
@@ -95,12 +96,10 @@ namespace _2DShooter
                 players[i].Color = playersColors[i];
                 players[i].Angle = MathHelper.ToRadians(90);
                 players[i].Power = 100;
+                players[i].Position = new Vector2();
+                players[i].Position.X = screenWidth / (numOfPlayers + 1) * (i + 1);
+                players[i].Position.Y = terrainContour[(int)players[i].Position.X];
             }
-
-            players[0].Position = new Vector2(172, 233);
-            players[1].Position = new Vector2(325, 255);
-            players[2].Position = new Vector2(486, 433);
-            players[3].Position = new Vector2(642, 197);
 
             playersScale = 50.0f / carriageTexture.Width;
         }
@@ -122,20 +121,35 @@ namespace _2DShooter
         {
             terrainContour = new int[screenWidth];
 
+            double rand1 = randomizer.NextDouble() + 1;
+            double rand2 = randomizer.NextDouble() + 2;
+            double rand3 = randomizer.NextDouble() + 3;
+
+            float offset = screenHeight / 2;
+            float peakHeight = 100;
+            float flatness = 100;
+            
             for (int x = 0; x < screenWidth; x++)
-                terrainContour[x] = screenHeight / 2;
+            {
+                double height = peakHeight / rand1  * Math.Sin((float)x / flatness * rand1 + rand1);
+                height += peakHeight / rand2 * Math.Sin((float)x / flatness * rand2 + rand2);
+                height += peakHeight / rand3 * Math.Sin((float)x / flatness * rand3 + rand3);
+                height += offset;
+                terrainContour[x] = (int)height;
+            }
         }
 
         private void GenerateForeground()
         {
             Color[] foregroundColors = new Color[screenWidth * screenHeight];
+            Color[,] groundColors = TextureTo2DArray(groundTexture);
 
-            for(int x = 0; x < screenWidth; x++)
+            for (int x = 0; x < screenWidth; x++)
             {
                 for(int y = 0; y < screenHeight; y++)
                 {
                     if (y > terrainContour[x])
-                        foregroundColors[x + y * screenWidth] = Color.Green;
+                        foregroundColors[x + y * screenWidth] = groundColors[x % groundTexture.Width, y % groundTexture.Height];
                     else
                         foregroundColors[x + y * screenWidth] = Color.Transparent;
                 }
@@ -143,6 +157,29 @@ namespace _2DShooter
 
             foregroundTexture = new Texture2D(device, screenWidth, screenHeight, false, SurfaceFormat.Color);
             foregroundTexture.SetData(foregroundColors);
+        }
+
+        private void FlattenTerrainBelowPlayers()
+        {
+            foreach(PlayerData player in players)
+            {
+                if (player.IsAlive)
+                    for (int x = 0; x < 55; x++)
+                        terrainContour[(int)player.Position.X + x] = terrainContour[(int)player.Position.X];
+            }
+        }
+
+        private Color[,] TextureTo2DArray(Texture2D texture)
+        {
+            Color[] colors1d = new Color[texture.Width * texture.Height];
+            texture.GetData(colors1d);
+
+            Color[,] colors2d = new Color[texture.Width, texture.Height];
+            for (int x = 0; x < texture.Width; x++)
+                for (int y = 0; y < texture.Height; y++)
+                    colors2d[x, y] = colors1d[x + y * texture.Width];
+
+            return colors2d;
         }
 
 
@@ -160,16 +197,16 @@ namespace _2DShooter
             font = Content.Load<SpriteFont>("Font");
 
             backgroundTexture = Content.Load<Texture2D>("background");
-            //foregroundTexture = Content.Load<Texture2D>("foreground");
+            groundTexture = Content.Load<Texture2D>("ground");
 
             carriageTexture = Content.Load<Texture2D>("carriage");
             cannonTexture = Content.Load<Texture2D>("cannon");
             rocketTexture = Content.Load<Texture2D>("rocket");
             smokeTexture = Content.Load<Texture2D>("smoke");
-
-            SetUpPlayers();
-
+            
             GenerateContours();
+            SetUpPlayers();
+            FlattenTerrainBelowPlayers();
             GenerateForeground();
         }
 
