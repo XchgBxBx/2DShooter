@@ -56,6 +56,8 @@ namespace _2DShooter
         List<Vector2> smokeList = new List<Vector2>();
         Random randomizer = new Random();
 
+        int[] terrainContour;
+        
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -116,6 +118,34 @@ namespace _2DShooter
             base.Initialize();
         }
 
+        private void GenerateContours()
+        {
+            terrainContour = new int[screenWidth];
+
+            for (int x = 0; x < screenWidth; x++)
+                terrainContour[x] = screenHeight / 2;
+        }
+
+        private void GenerateForeground()
+        {
+            Color[] foregroundColors = new Color[screenWidth * screenHeight];
+
+            for(int x = 0; x < screenWidth; x++)
+            {
+                for(int y = 0; y < screenHeight; y++)
+                {
+                    if (y > terrainContour[x])
+                        foregroundColors[x + y * screenWidth] = Color.Green;
+                    else
+                        foregroundColors[x + y * screenWidth] = Color.Transparent;
+                }
+            }
+
+            foregroundTexture = new Texture2D(device, screenWidth, screenHeight, false, SurfaceFormat.Color);
+            foregroundTexture.SetData(foregroundColors);
+        }
+
+
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
@@ -125,10 +155,12 @@ namespace _2DShooter
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            device = graphics.GraphicsDevice;
+
             font = Content.Load<SpriteFont>("Font");
 
             backgroundTexture = Content.Load<Texture2D>("background");
-            foregroundTexture = Content.Load<Texture2D>("foreground");
+            //foregroundTexture = Content.Load<Texture2D>("foreground");
 
             carriageTexture = Content.Load<Texture2D>("carriage");
             cannonTexture = Content.Load<Texture2D>("cannon");
@@ -136,6 +168,9 @@ namespace _2DShooter
             smokeTexture = Content.Load<Texture2D>("smoke");
 
             SetUpPlayers();
+
+            GenerateContours();
+            GenerateForeground();
         }
 
         /// <summary>
@@ -249,7 +284,7 @@ namespace _2DShooter
         {
             if(rocketFlying)
             {
-                spriteBatch.Draw(rocketTexture, rocketPosition, null, players[currentPlayer].Color, rocketAngle, new Vector2(42, 240), 0.1f, SpriteEffects.None, 1);
+                spriteBatch.Draw(rocketTexture, rocketPosition, null, players[currentPlayer].Color, rocketAngle, new Vector2(42, 240), rocketScaling, SpriteEffects.None, 1);
             }
         }
 
